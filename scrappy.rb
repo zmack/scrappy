@@ -46,7 +46,7 @@ def extract_links(url)
 
         content << {
           :name => l.text.strip,
-          :uri => URI.join(url, l.attribute('href').value).to_s,
+          :value => URI.join(url, l.attribute('href').value).to_s,
           :type => 'uri'
         }
       end
@@ -68,9 +68,9 @@ end
 docs = urls.map { |url| extract_links(url) }.flatten
 
 =begin
-ap docs
 puts JSON.dump(docs)
 =end
+ap docs
 
 Net::HTTP.start(SERVICE_URI.host, SERVICE_URI.port) do |http|
   response = http.post(SERVICE_URI.path, JSON.dump(docs))
